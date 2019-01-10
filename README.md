@@ -1,6 +1,8 @@
 # CSSOM-and-MutationObserver-example
-A simple way of accessing CSSOM to read/modify the stylesheet and use MutationObserver to detect changes in the DOM. 
+A simple way/tutorial of accessing CSSOM to read/modify the stylesheet and use MutationObserver to detect changes in the DOM. 
 It was hard to find information about this. I mean, most of the examples were incomplete or applied only to the inline attributes.
+
+What this does: changes the textbox background color every time a new child is added to a div.
 
 Live example: https://codepen.io/tainan/pen/vvzbwv
 
