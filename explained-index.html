@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - easy CSSOM and MutationObserver explained</title>
+  <style>
+    #text {
+      background-color: white;
+    }
+    #newline {
+      background-color: yellow;
+    }
+  </style>
+</head>
+<body translate="no">
+  <input type="text" id="text" placeholder="type something">
+  <button id="button">Click me!</button>
+  <div id="elements"></div>
+<script>
+//define the elements so we can use them later.
+const textElement = document.querySelector("#text");
+const buttonElement = document.querySelector("#button");
+const divElement = document.querySelector("#elements");
+
+//bellow we are going to create the rules for the observer
+//For this example we'll only make use of childList but I let the others for reference
+var observerOptions = {
+  childList: true,
+  attributes: true,
+  subtree: true //Omit or set to false to observe only changes to the parent node.
+};
+  var observer = new MutationObserver((mutationCallback) => { //the observer var creates a new MutationObserver. This code will be executed everytime a new element is added to <div> (childList)
+    function getRule(name){//the (name) (the function call is bellow) is the css rule name, is this case it is the ID of the element that we'll work on.
+      let stylesheet = document.styleSheets[0].cssRules; //Get the first stylesheet we're using in this document. In this document we only have one stylesheet, so it's position in the styleSheets array is [0]. The cssRules returns an object with all the rules defined in the external stylesheet. In this case it would return: CSSRuleList {0: CSSStyleRule, 1: CSSStyleRule}. Navigating through this object, each entry/rule holds it's properties. For example, the cssRules[0].selectorText is #text, the cssRules[1] is #newLine.
+      //console.log(stylesheet); //take the comment out, run the code and press F12 to see what's shown in the console
+      for (let ruleNumber in stylesheet) { //lets navigate through styleshee
+        if(stylesheet[ruleNumber].selectorText === name){ //the rule number will run through all the object, stylesheet[0], stylesheet[1]...stylesheet[354] whatever is the size of it.
+          let rule = stylesheet[ruleNumber].style; //for simplicity sake
+          if(rule.getPropertyValue("background-color") === "white"){
+            rule.setProperty("background-color", "green");
+          } else {
+            rule.setProperty("background-color", "white");
+          }
+        }
+      }
+    }
+    getRule("#text");
+  });
+
+observer.observe(divElement, observerOptions);//observes the divElement for the options defined at observerOptions. In this case only matters the trigger for childList, i.e.,  a new child added to divElement
+
+buttonElement.addEventListener('click', e => { //this is triggered when buttonElement is clicked
+  let newLine = document.createElement('p'); //the new element to be created
+  newLine.setAttribute("id", "newline"); //sets the attributes to this new element
+  newLine.textContent = textElement.value ? textElement.value : "nothing"; //defines the text to be shown @it
+  divElement.appendChild(newLine);//appends it to the divElement
+  textElement.value = ""; //cleans the textElement
+});
+
+/*
+A smaller way (but more complex to explain) to navigate through the rules object would be:
+  function getRule(name){
+    let styleSheet = function(){return Object.values(document.styleSheets[0].cssRules)}; //this returns an array
+    console.log(styleSheet().map(rule => rule.selectorText === name ? name : "othername")); //run through each returned value
+  }
+*/
+</script>
+</body></html>
