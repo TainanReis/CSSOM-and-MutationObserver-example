@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - easy CSSOM and MutationObserver explained</title>
+  <style>
+    #text {
+      background-color: white;
+    }
+    #newline {
+      background-color: yellow;
+    }
+  </style>
+</head>
+<body translate="no">
+  <input type="text" id="text" placeholder="type something">
+  <button id="button">Click me!</button>
+  <div id="elements"></div>
+<script>
+const textElement = document.querySelector("#text");
+const buttonElement = document.querySelector("#button");
+const divElement = document.querySelector("#elements");
+var observerOptions = {
+  childList: true,
+  attributes: true,
+  subtree: true
+};
+  var observer = new MutationObserver((mutationCallback) => { 
+    function getRule(name){
+      let stylesheet = document.styleSheets[0].cssRules;
+      for (let ruleNumber in stylesheet) { //lets navigate through styleshee
+        if(stylesheet[ruleNumber].selectorText === name){
+          let rule = stylesheet[ruleNumber].style;
+          if(rule.getPropertyValue("background-color") === "white"){
+            rule.setProperty("background-color", "green");
+          } else {
+            rule.setProperty("background-color", "white");
+          }
+        }
+      }
+    }
+    getRule("#text");
+  });
+observer.observe(divElement, observerOptions);
+buttonElement.addEventListener('click', e => {
+  let newLine = document.createElement('p');
+  newLine.setAttribute("id", "newline");
+  newLine.textContent = textElement.value ? textElement.value : "nothing";
+  divElement.appendChild(newLine);
+  textElement.value = "";
+});
+/*I'll let this one here in case you want to give it a try
+A smaller way (but more complex to explain) to navigate through the rules object would be:
+  function getRule(name){
+    let styleSheet = function(){return Object.values(document.styleSheets[0].cssRules)};
+    console.log(styleSheet().map(rule => rule.selectorText === name ? name : "othername"));
+  }
+*/
+</script>
+</body></html>
