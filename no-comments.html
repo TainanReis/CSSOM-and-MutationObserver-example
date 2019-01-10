@@ -42,7 +42,7 @@ var observerOptions = {
     getRule("#text");
   });
 observer.observe(divElement, observerOptions);
-buttonElement.addEventListener('click', e => {
+buttonElement.addEventListener('click', () => {
   let newLine = document.createElement('p');
   newLine.setAttribute("id", "newline");
   newLine.textContent = textElement.value ? textElement.value : "nothing";
