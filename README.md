@@ -2,6 +2,8 @@
 A simple way of accessing CSSOM to read/modify the stylesheet and use MutationObserver to detect changes in the DOM. 
 It was hard to find information about this. I mean, most of the examples were incomplete or applied only to the inline attributes.
 
+Live example: https://codepen.io/tainan/pen/vvzbwv
+
 Helpful Links (ordered by the good content):
 
 CSSOM:
