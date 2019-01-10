@@ -49,7 +49,7 @@ var observerOptions = {
 
 observer.observe(divElement, observerOptions);//observes the divElement for the options defined at observerOptions. In this case only matters the trigger for childList, i.e.,  a new child added to divElement
 
-buttonElement.addEventListener('click', e => { //this is triggered when buttonElement is clicked
+buttonElement.addEventListener('click', () => { //this is triggered when buttonElement is clicked
   let newLine = document.createElement('p'); //the new element to be created
   newLine.setAttribute("id", "newline"); //sets the attributes to this new element
   newLine.textContent = textElement.value ? textElement.value : "nothing"; //defines the text to be shown @it
